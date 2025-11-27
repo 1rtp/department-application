@@ -308,7 +308,7 @@ namespace КП_Кафедра.Forms
                 selectedReport = Path.GetFileName(fullPath);
                 OpenReportPreview(selectedReport);
             }
-            else { Toast.Show("INFO", "Це останній звіт"); }
+            else { Toast.Show("INFO", "Це перший звіт"); }
         }
 
         private void btnPreviousReport_Click(object sender, EventArgs e)
@@ -319,7 +319,7 @@ namespace КП_Кафедра.Forms
                 selectedReport = Path.GetFileName(fullPath);
                 OpenReportPreview(selectedReport);
             }
-            else { Toast.Show("INFO", "Це перший звіт"); }
+            else { Toast.Show("INFO", "Це останній звіт"); }
         }
     }
 }

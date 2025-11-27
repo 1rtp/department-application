@@ -158,6 +158,7 @@
     <Compile Include="Forms\ToastForm.Designer.cs">
       <DependentUpon>ToastForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IteratorPattern.cs" />
     <Compile Include="LanguageManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

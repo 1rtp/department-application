@@ -14,7 +14,6 @@ using КП_Кафедра.Properties;
 using static КП_Кафедра.ToastForm;
 using SerializerLib;
 
-
 namespace КП_Кафедра.Forms
 {
     public partial class FormSettings : Form

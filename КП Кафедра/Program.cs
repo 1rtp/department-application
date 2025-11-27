@@ -213,8 +213,8 @@ namespace КП_Кафедра
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new FormMainMenu("Name", "admin@gmail.com"));
-                //Application.Run(new FormLogin());
+                //Application.Run(new FormMainMenu("Name", "admin@gmail.com"));
+                Application.Run(new FormLogin());
             }
             catch (Exception ex)
             {
