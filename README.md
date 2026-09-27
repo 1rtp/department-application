@@ -1,43 +1,172 @@
-# Система управління кафедрою – README
+# Система управління кафедрою
 
-## Опис проєкту
-
-Цей десктопний застосунок призначений для управління персоналом кафедри, академічними дисциплінами, науковими роботами та іншими пов’язаними даними.
-
-Цей файл містить інструкції щодо підготовки проєкту, запуску та роботи із даними.
+Десктопний WinForms застосунок для комплексного управління персоналом, академічними дисциплінами, науковими дослідженнями та звітністю кафедри комп'ютерних наук та інформаційних технологій.
 
 ---
 
-## Підготовка проєкту
+## Технологічний стек
 
-### 1. Відновлення пакетів NuGet
-
-Після завантаження репозиторію з GitHub:
-
-* Відкрийте рішення у Visual Studio.
-* Відновіть усі пакети NuGet для головного проєкту.
-
-### 2. Збирання проєкту `SerializerLib`
-
-У рішенні є додатковий проєкт, розташований у папці `SerializerLib`.
-Щоб забезпечити коректну роботу застосунку:
-
-* Відкрийте проєкт `SerializerLib`.
-* Відновіть для нього пакети NuGet.
-* Виконайте збирання, щоб головний проєкт зміг підключити цю бібліотеку.
+| Частина | Технології |
+|---|---|
+| **Язык** | C# (.NET Framework 4.7.2) |
+| **UI Framework** | Windows Forms |
+| **База даних** | SQLite |
+| **Звітність** | FastReport .NET |
+| **Сеціалізація даних** | Власна бібліотека (SerializerLib), JSON, XML, Binary |
+| **Office Integration** | MS Office Interop (Excel, Word), ClosedXML, DocX, Spire.Doc |
+| **Логування** | NLog 6.0.5 |
 
 ---
 
-## Запуск застосунку
+## Структура проєкту
 
-Після успішного збирання всіх частин можна запускати головний застосунок.
+```
+КП Кафедра/                      # Основний проєкт WinForms
+├── Forms/                        # UI форми
+│   ├── FormLogin.cs             # Форма входу
+│   ├── FormAssignment.cs        # Управління навантаженням викладачів
+│   ├── FormTeacher.cs           # Управління викладачами
+│   ├── FormSubject.cs           # Управління дисциплінами
+│   ├── FormResearch.cs          # Управління науковими дослідженнями
+│   ├── FormParticipation.cs     # Управління участю в проєктах
+│   ├── FormReport.cs            # Генерація звітів
+│   ├── FormReportViewer.cs      # Перегляд звітів
+│   ├── FormTables.cs            # Перегляд таблиць даних
+│   ├── FormSettings.cs          # Налаштування системи
+│   └── ToastForm.cs             # Сповіщення користувача
+├── Program.cs                    # Entry point, моделі даних (Teacher, Subject, Research, etc.)
+├── DatabaseSQL.cs               # Ініціалізація та робота з БД
+├── DataService.cs               # Сервіс отримання/збереження даних
+├── AppSettings.cs               # Конфігурація застосунку
+├── FormMainMenu.cs              # Головне меню
+├── LanguageManager.cs           # Управління мовами (UK/EN)
+├── IteratorPattern.cs           # Паттерн Iterator для колекцій
+├── RepCOM.cs                    # Інтеграція з COM об'єктами
+├── ReportBridge.cs              # Мост до FastReport
+├── RoundButton.cs               # Кастомний компонент кнопки
+├── DatePicker.cs                # Кастомний календар для вибору дати
+├── NLog.config                  # Конфіг логування
+├── App.config                   # Конфіг застосунку
+├── Resources/                    # Ресурси (іконки, локалізація)
+│   ├── Strings.resx            # Текстові ресурси (укр.)
+│   ├── Strings.en.resx         # Текстові ресурси (англ.)
+│   └── *.png                    # Іконки (icons8)
+├── Data/                         # Файли даних
+│   ├── department.db            # SQLite база даних
+│   ├── init_data.sql            # Скрипт ініціалізації БД
+│   ├── department.json          # Експорт даних (JSON)
+│   ├── department.xml           # Експорт даних (XML) для FastReport
+│   └── department.bin           # Експорт даних (Binary)
+├── Reports/                      # Шаблони звітів FastReport
+└── КП Кафедра.csproj           # Конфіг проєкту
+
+SerializerLib/                    # Окремий проєкт — бібліотека сеціалізації
+├── SerializerLib.csproj        # Конфіг бібліотеки
+└── ...                          # Класи для серіалізації
+
+КП Кафедра.sln                   # Visual Studio рішення
+```
+
+---
+
+## Основні функції
+
+### 👨‍🏫 Управління викладачами
+- Реєстрація та редагування даних викладача (ПІБ, посада, контакти)
+- Отримання та звільнення з кафедри
+- Прив'язка до спеціальностей
+
+### 📚 Управління дисциплінами
+- Додавання та редагування дисциплін
+- Розподіл за семестрами та спеціальностями
+- Облік годин та статусу
+
+### 👥 Навантаження викладачів
+- Розподіл завдань (Assignment) між викладачами
+- Облік планових та фактичних годин
+- Типи занять (лекції, практики, семінари)
+
+### 🔬 Наукові дослідження
+- Реєстрація проєктів та дослідницьких напрямків
+- Управління участю викладачів в науковій роботі
+- Облік часових рамок (дата початку / завершення)
+
+### 📊 Звітність
+- Генерація звітів FastReport у форматі PDF, Excel, Word
+- Експорт даних у JSON, XML, Binary
+- Користувацька типографія та структурування даних
+
+### 🌐 Багатомовність
+- Підтримка української та англійської мов
+- Динамічна зміна мови без перезавантаження
+- Локалізовані ресурси (Strings.resx, Strings.en.resx)
+
+---
+
+## Швидкий старт
+
+### Передумови
+
+- **Visual Studio 2019+** (або VS Code з .NET Framework інструментами)
+- **.NET Framework 4.7.2** (повинен бути встановлено)
+- **Windows OS** (невід'ємна вимога для Windows Forms)
+
+### 1. Клонування репозиторію
+
+```bash
+git clone https://github.com/1rtp/department-application.git
+cd department-application
+```
+
+### 2. Відновлення пакетів NuGet
+
+У Visual Studio:
+
+```
+Tools → NuGet Package Manager → Package Manager Console
+```
+
+Виконайте:
+
+```powershell
+# Для головного проєкту
+Update-Package
+
+# Для SerializerLib
+cd ..\SerializerLib
+Update-Package
+cd ..\
+```
+
+Або натисніть на рішення правою кнопкою → **Restore NuGet Packages**.
+
+### 3. Збирання проєкту SerializerLib
+
+1. У **Solution Explorer** клацніть правою кнопкою на проєкт **SerializerLib**
+2. Виберіть **Build**
+3. Дочекайтесь завершення без помилок
+
+> ⚠️ **Важливо**: Головний проєкт залежить від скомпільованої DLL з SerializerLib.
+> Якщо ви отримаєте помилку про відсутність бібліотеки, перебудуйте SerializerLib.
+
+### 4. Збирання та запуск головного проєкту
+
+1. Клацніть на рішення **КП Кафедра** (проєкт з іконкою WinForms)
+2. Натисніть **Build → Build КП Кафедра**
+3. Запустіть проєкт **F5** або **Debug → Start Debugging**
+
+---
+
+## Використання
 
 ### Дані для входу
 
-У формі входу потрібно ввести такі стандартні облікові дані:
+При першому запуску використовуйте **стандартні облікові дані адміністратора**:
 
-* **Email:** `romaasericyn@gmail.com`
-* **Password:** `123456789`
+| Поле | Значення |
+|---|---|
+| **Email** | `romaasericyn@gmail.com` |
+| **Password** | `123456789` |
 
 Ці дані зберігаються у файлі:
 
@@ -47,132 +176,264 @@
     └── admin.json
 ```
 
-За потреби ви можете змінити email, пароль або ім’я безпосередньо у цьому файлі.
+Ви можете змінити їх прямо у файлі або через форму налаштувань.
+
+### Основні операції
+
+#### Додавання викладача
+
+1. Головне меню → **Викладачі**
+2. Натисніть **Додати нового**
+3. Заповніть дані (ПІБ, посада, контакти, спеціальність)
+4. Натисніть **Зберегти**
+
+#### Додавання дисципліни
+
+1. Головне меню → **Дисципліни**
+2. Натисніть **Додати**
+3. Виберіть спеціальність, введіть назву, семестр, кількість годин
+4. Натисніть **OK**
+
+#### Розподіл навантаження
+
+1. Головне меню → **Навантаження**
+2. Виберіть викладача та дисципліну
+3. Задайте планові години, тип заняття
+4. Натисніть **Зберегти**
+
+#### Генерація звіту
+
+1. Головне меню → **Звіти**
+2. Виберіть тип звіту (за викладачами, дисциплінами, дослідженнями)
+3. Налаштуйте параметри
+4. Натисніть **Сформувати**
+5. Оберіть формат експорту (PDF, Excel, Word)
+
+### Робота з даними FastReport
+
+Перед формуванням звіту у FastReport:
+
+1. **Оновіть XML-файл**: Головне меню → **Налаштування** → **Експортувати дані** → **XML**
+2. Це забезпечить, що звіти містять актуальні дані з бази
+3. Шаблони звітів розташовані у папці **Reports/**
+
+### Експорт даних
+
+Застосунок дозволяє експортувати весь датасет у три формати:
+
+| Формат | Розташування | Призначення |
+|---|---|---|
+| **JSON** | `Data/department.json` | Обмін даними, веб-інтеграція |
+| **XML** | `Data/department.xml` | Джерело даних для FastReport |
+| **Binary** | `Data/department.bin` | Компактне зберігання, швидкість |
 
 ---
 
-## Структура даних застосунку
+## Структура бази даних
 
-Застосунок працює з кількома файлами, розташованими у папці `Data`:
+SQLite база `department.db` містить такі таблиці:
 
-* **`init_data.sql`** — містить початкові дані для бази (використовується для первинного наповнення).
-* **`department.db`** — основна база даних SQLite, у якій зберігаються всі актуальні дані.
-* **`department.bin`**, **`department.json`**, **`department.xml`** — альтернативні формати експорту, які створює програма.
+| Таблиця | Опис |
+|---|---|
+| `Specialties` | Спеціальності кафедри |
+| `Teachers` | Викладачі з контактами та статусом |
+| `Subjects` | Академічні дисципліни |
+| `LessonTypes` | Типи занять (лекція, практика, семінар) |
+| `Assignments` | Навантаження викладачів |
+| `Researches` | Наукові проєкти |
+| `Participations` | Участь викладачів у дослідженнях |
+| `Users` | Користувачі системи (автентифікація) |
 
-Усі зміни, зроблені у застосунку, записуються у файл `department.db`.
-За потреби дані можна експортувати у JSON, XML або двійковий формат.
-
----
-
-## Робота зі звітами FastReport
-
-Щоб звіти коректно відображали актуальні дані:
-
-* Якщо у застосунку були додані нові записи, потрібно оновити файл **`department.xml`** перед формуванням звіту.
-* Це забезпечить відповідність інформації у звіті актуальному стану бази.
-
-FastReport використовує XML-файл як джерело даних.
+Схема БД ініціалізується автоматично з файлу **`init_data.sql`** при першому запуску.
 
 ---
 
-## Примітки
+## Налаштування
 
-* Переконайтеся, що всі проєкти у рішенні успішно збираються перед запуском програми.
-* Якщо застосунок не може знайти бібліотеку серіалізації, спробуйте повторно зібрати `SerializerLib`.
-* Папка `Data` повинна залишатися в тому ж розташуванні відносно виконуваного файлу.
+### Мова інтерфейсу
+
+1. Головне меню → **Налаштування**
+2. Виберіть мову: **Українська** або **English**
+3. Застосунок перезавантажиться автоматично
+
+Налаштування зберігаються в `App.config`:
+
+```xml
+<appSettings>
+    <add key="Language" value="Ukrainian" />
+</appSettings>
+```
+
+### Конфіг логування (NLog)
+
+Файл `КП Кафедра/NLog.config` керує записуванням логів:
+
+```xml
+<target name="file" xsi:type="File" 
+  fileName="Logs/${shortdate}.log" />
+```
+
+Логи писаються у папку **Logs/** в корені проєкту.
+
+---
+
+## Особливості реалізації
+
+- **Паттерни проектування**: Iterator (для перебору колекцій), Bridge (для FastReport), Singleton (для DataService)
+- **COM-інтеграція**: Безпосередня робота з Excel та Word через MS Office Interop
+- **Асинхронні операції**: Експорт великих датасетів в окремих потоках
+- **Валідація**: Перевірка даних на рівні форм та БД
+- **Логування**: Всі операції логуються через NLog для діагностики проблем
+
+---
+
+## Поширені проблеми
+
+| Проблема | Причина | Рішення |
+|---|---|---|
+| *"SerializerLib не знайдено"* | DLL не збудована | Перебудуйте проєкт SerializerLib, переконайтеся шляху в .csproj |
+| *Помилка при запуску FastReport* | Відсутні файли звітів | Перевірте папку `Reports/` на наявність `.frx` файлів |
+| *База даних не ініціалізується* | Відсутній `init_data.sql` | Перевірте папку `Data/` та шляхи в `Program.cs` |
+| *Не вдається підключитися до бази* | Неправильний шлях або доступ | Переконайтеся, що папка `Data/` існує і доступна для запису |
+| *Office Interop викидає помилку* | MS Office не встановлений | Встановіть Microsoft Office або скористайтесь альтернативою (ClosedXML, DocX) |
+| *Мова не змінюється* | Помилка в локалізації ресурсів | Перевірте файли `Strings.resx` та `Strings.en.resx` |
+
+---
+
+## Розробка
+
+### Додавання нової форми
+
+1. У папці `Forms/` створіть новий WinForms клас: **Add → New Item → Windows Form**
+2. Назвіть його `FormYourName.cs`
+3. На главному меню додайте кнопку з обробником:
+
+```csharp
+private void btnYourForm_Click(object sender, EventArgs e)
+{
+    FormYourName form = new FormYourName();
+    form.ShowDialog();
+}
+```
+
+### Додавання нової таблиці до БД
+
+1. Відредагуйте файл `Data/init_data.sql` і додайте `CREATE TABLE` запит
+2. Оновіть клас `DatabaseSQL.cs` з новими методами для CRUD операцій
+3. Перестартуйте застосунок — база буде заново ініціалізована
+
+### Локалізація
+
+Додайте новий текст:
+
+1. Відкрийте `Resources/Strings.resx` (укр.) та `Strings.en.resx` (англ.)
+2. Додайте новий ресурс з унікальним ключем (напр., `lblNewText`)
+3. У коді використовуйте:
+
+```csharp
+label.Text = Resources.Strings.lblNewText;
+```
 
 ---
 
 ## Автор
 
-Ящеріцин Роман Євгенович
+**Ящеріцин Роман Євгенович**
 
 ---
 
-# Department Management System – README
+## Ліцензія
 
-## Overview
-
-This desktop application is designed for managing department personnel, academic activities, and related data. 
-
-This README provides instructions for setting up, launching, and working with the project.
+Вказати ліцензію (якщо є)
 
 ---
 
-## Project Setup
+# Department Management System
 
-### 1. Restore NuGet Packages
-
-After downloading the project from GitHub:
-
-* Open the solution in Visual Studio.
-* Restore all NuGet packages for the main project.
-
-### 2. Build the `SerializerLib` Project
-
-The solution contains an additional project located in the `SerializerLib` folder.
-To ensure correct operation:
-
-* Open the `SerializerLib` project.
-* Restore its NuGet packages.
-* Build the project so the main application can reference it properly.
+Desktop WinForms application for comprehensive management of personnel, academic disciplines, scientific research, and reporting for the Computer Science and Information Technologies Department.
 
 ---
 
-## Launching the Application
+## Technology Stack
 
-After building all components, you can run the main project.
-
-### Login Credentials
-
-On the login form, enter the following default credentials:
-
-* **Email:** `romaasericyn@gmail.com`
-* **Password:** `123456789`
-
-These credentials are stored in:
-
-```
-КП Кафедра/
-└── Data/
-    └── admin.json
-```
-
-You may change the email, password, or name inside `admin.json` if needed.
+| Component | Technologies |
+|---|---|
+| **Language** | C# (.NET Framework 4.7.2) |
+| **UI Framework** | Windows Forms |
+| **Database** | SQLite |
+| **Reporting** | FastReport .NET |
+| **Data Serialization** | Custom library (SerializerLib), JSON, XML, Binary |
+| **Office Integration** | MS Office Interop (Excel, Word), ClosedXML, DocX, Spire.Doc |
+| **Logging** | NLog 6.0.5 |
 
 ---
 
-## Application Data Structure
+## Quick Start
 
-The application uses several files located in the `Data` folder:
+### Prerequisites
 
-* **`init_data.sql`** — contains the initial dataset for the application (used to populate the database).
-* **`department.db`** — the main SQLite database storing current working data.
-* **`department.bin`**, **`department.json`**, **`department.xml`** — optional export formats generated by the application depending on user actions.
+- **Visual Studio 2019+** or **Visual Studio Code with .NET Framework tools**
+- **.NET Framework 4.7.2** installed
+- **Windows OS** (required for Windows Forms)
 
-Changes made inside the app are saved to `department.db`, and you may also export them to the alternative formats above.
+### Setup Steps
+
+1. **Clone repository**:
+   ```bash
+   git clone https://github.com/1rtp/department-application.git
+   cd department-application
+   ```
+
+2. **Restore NuGet packages**:
+   - Open solution in Visual Studio
+   - Right-click solution → **Restore NuGet Packages**
+
+3. **Build SerializerLib**:
+   - Right-click **SerializerLib** project → **Build**
+   - Ensure build completes without errors
+
+4. **Build and run main project**:
+   - Select **КП Кафедра** project
+   - Press **F5** or **Debug → Start Debugging**
+
+### Default Login Credentials
+
+| Field | Value |
+|---|---|
+| **Email** | `romaasericyn@gmail.com` |
+| **Password** | `123456789` |
 
 ---
 
-## Working with FastReport
+## Main Features
 
-To ensure reports display up-to-date department information:
-
-* If new data was added inside the application, update or reload the file **`department.xml`** before generating a report.
-* This ensures reports correctly reflect all recent changes.
-
-FastReport templates rely on the XML structure to load and display data.
-
----
-
-## Notes
-
-* Make sure that all projects within the solution build without errors before starting the main application.
-* If the application cannot find the serialization library, rebuild `SerializerLib` again.
-* Ensure the `Data` folder remains in its original location relative to the executable.
+- **Teacher Management** — registration, editing, assignment to specialties
+- **Academic Discipline Management** — subjects by semester and specialty
+- **Workload Distribution** — assign lessons and teaching hours to teachers
+- **Scientific Research** — manage projects and teacher participation
+- **Report Generation** — create and export reports in PDF, Excel, Word formats
+- **Data Export** — JSON, XML, Binary formats
+- **Multilingual Support** — Ukrainian and English
+- **NLog Integration** — comprehensive logging and diagnostics
 
 ---
 
-## Author
+## Project Structure
 
-Yascheritsyn Roman Yevgenyevich
+The main application **КП Кафедра** contains:
+- **Forms/** — WinForms UI classes
+- **Data/** — SQLite database and initial data script
+- **Reports/** — FastReport templates
+- **Resources/** — localization strings and icons
+
+**SerializerLib** — separate DLL project for data serialization
+
+---
+
+## Important Notes
+
+⚠️ Ensure all projects in the solution build successfully before running.
+⚠️ The `Data` folder must remain in its original location relative to the executable.
+⚠️ FastReport templates require updated XML export file for current data.
+
+For detailed documentation in Ukrainian, see the top section of this README.
